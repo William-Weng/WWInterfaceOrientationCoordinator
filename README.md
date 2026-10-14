@@ -12,6 +12,8 @@
 
 iPhone Duo 的外螢幕通常對應 compact width，內螢幕則通常對應 regular width；App 應依 size class 調整版面，而不是針對每種裝置姿勢寫死 layout。本元件把「監聽 size class 變化」與「取得目前 orientation」收斂到同一個 coordinator，讓 ViewController 不需要散落多處處理 trait 與轉場邏輯。
 
+https://github.com/user-attachments/assets/f8d1eb71-b920-4013-af30-600cbf432366
+
 ## ✨ [主要功能](https://medium.com/@iamCoder/device-orientation-modes-in-ios-c86fb3497ede)
 
 - 觀察 `UITraitHorizontalSizeClass` 變化，適合處理 Duo 外螢幕與內螢幕間的 compact／regular 切換。

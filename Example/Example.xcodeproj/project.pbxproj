@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		812A74FF307F616E00287876 /* WWInterfaceOrientationCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 812A74FE307F616E00287876 /* WWInterfaceOrientationCoordinator */; };
+		812A7516307F740800287876 /* WWInterfaceOrientationCoordinator in Frameworks */ = {isa = PBXBuildFile; productRef = 812A7515307F740800287876 /* WWInterfaceOrientationCoordinator */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		812A749E307F5FC800287876 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				812A7516307F740800287876 /* WWInterfaceOrientationCoordinator in Frameworks */,
 				812A74FF307F616E00287876 /* WWInterfaceOrientationCoordinator in Frameworks */,
 			);
 		};
@@ -80,6 +82,7 @@
 			name = Example;
 			packageProductDependencies = (
 				812A74FE307F616E00287876 /* WWInterfaceOrientationCoordinator */,
+				812A7515307F740800287876 /* WWInterfaceOrientationCoordinator */,
 			);
 			productName = Example;
 			productReference = 812A74A1307F5FC800287876 /* Example.app */;
@@ -110,7 +113,7 @@
 			mainGroup = 812A7498307F5FC800287876;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				812A74FD307F616E00287876 /* XCLocalSwiftPackageReference "../../WWInterfaceOrientationCoordinator" */,
+				812A7514307F740800287876 /* XCRemoteSwiftPackageReference "WWInterfaceOrientationCoordinator" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 812A74A2307F5FC800287876 /* Products */;
@@ -355,16 +358,25 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		812A74FD307F616E00287876 /* XCLocalSwiftPackageReference "../../WWInterfaceOrientationCoordinator" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../WWInterfaceOrientationCoordinator;
+/* Begin XCRemoteSwiftPackageReference section */
+		812A7514307F740800287876 /* XCRemoteSwiftPackageReference "WWInterfaceOrientationCoordinator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/William-Weng/WWInterfaceOrientationCoordinator";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.5.0;
+			};
 		};
-/* End XCLocalSwiftPackageReference section */
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		812A74FE307F616E00287876 /* WWInterfaceOrientationCoordinator */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = WWInterfaceOrientationCoordinator;
+		};
+		812A7515307F740800287876 /* WWInterfaceOrientationCoordinator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 812A7514307F740800287876 /* XCRemoteSwiftPackageReference "WWInterfaceOrientationCoordinator" */;
 			productName = WWInterfaceOrientationCoordinator;
 		};
 /* End XCSwiftPackageProductDependency section */

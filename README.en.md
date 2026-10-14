@@ -12,6 +12,8 @@ A lightweight UIKit utility for coordinating changes to a `UIViewController`’s
 
 The outer display of iPhone Duo typically uses a compact width, while the inner display typically uses a regular width. Apps should adapt their layouts based on size classes rather than hardcoding a layout for every device configuration. This component brings size class observation and current orientation access together in a single coordinator, keeping trait and transition handling from being scattered throughout your view controller.
 
+https://github.com/user-attachments/assets/f8d1eb71-b920-4013-af30-600cbf432366
+
 ## ✨ Features
 
 - Observes `UITraitHorizontalSizeClass` changes to support compact/regular layout transitions between Duo’s outer and inner displays.
