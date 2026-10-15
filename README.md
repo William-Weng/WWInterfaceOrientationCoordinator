@@ -44,6 +44,8 @@ import WWInterfaceOrientationCoordinator
 
 ## 🧱 [API 總覽](https://developer.apple.com/design/human-interface-guidelines/designing-for-iphone-duo)
 
+### WWInterfaceOrientationCoordinator
+
 | API | 說明 |
 | --- | --- |
 | `orientation` | 目前所觀察 view controller 的 interface orientation。若 view controller 尚未加入 window，或無法取得 window scene，則回傳 `nil`。 |
@@ -51,7 +53,20 @@ import WWInterfaceOrientationCoordinator
 | `register(forHorizontalSizeClassChanges:onChange:)` | 註冊 horizontal size class 變更通知。註冊後會立即以目前狀態呼叫 `initial`，之後每當 `UITraitHorizontalSizeClass` 改變時呼叫 `onChange`。 |
 | `willTransition(with:animation:completion:)` | 在 view controller 轉場期間，依目前 interface orientation 執行自訂動畫。若無法取得目前方向，則不會呼叫動畫 callback。 |
 
-## 🧪 使用範例
+### WWOrientationInformation
+
+| API | 說明 |
+| --- | --- |
+| `nil` | 空白／未知的方向資訊。 |
+| `isLandscape` | 是否為橫向 UI。 |
+| `isPortrait` | 是否為直向 UI。 |
+| `isRegularWidth` | 目前的 horizontal size class 是否為 regular。 |
+| `isCompactWidth` | 目前的 horizontal size class 是否為 compact。 |
+| `didChangeToRegularWidth` | horizontal size class 是否從 compact 變成 regular。 |
+| `didChangeToCompactWidth` | horizontal size class 是否從 regular 變成 compact。 |
+| `init(previousHorizontalClass:horizontalClass:orientation:)` | 目前所觀察 view controller 的 interface orientation。若 view controller 尚未加入 window，或無法取得 window scene，則回傳 `nil`。 |
+
+## 🧪 [使用範例](https://developer.apple.com/videos/play/wwdc2017/812/)
 
 ```swift
 import UIKit

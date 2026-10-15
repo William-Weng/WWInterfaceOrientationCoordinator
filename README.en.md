@@ -44,12 +44,27 @@ import WWInterfaceOrientationCoordinator
 
 ## 🧱 API Overview
 
+### WWInterfaceOrientationCoordinator
+
 | API | Description |
 | --- | --- |
 | `orientation` | The current interface orientation of the observed view controller. Returns `nil` if the view controller is not attached to a window or its window scene is unavailable. |
 | `horizontalClass` | The current horizontal size class from the view controller’s trait collection. Returns `nil` if the view controller has been deallocated. |
 | `register(forHorizontalSizeClassChanges:onChange:)` | Registers for horizontal size class changes. Calls `initial` immediately with the current state, then calls `onChange` whenever `UITraitHorizontalSizeClass` changes. |
 | `willTransition(with:animation:completion:)` | Runs a custom animation alongside a view controller transition, using the current interface orientation. If the orientation cannot be determined, the animation callback is not called. |
+
+### WWOrientationInformation
+
+| API | Description |
+| --- | --- |
+| `nil` | Empty or unknown orientation information. |
+| `isLandscape` | Whether the current UI is in landscape orientation. |
+| `isPortrait` | Whether the current UI is in portrait orientation. |
+| `isRegularWidth` | Whether the current horizontal size class is regular. |
+| `isCompactWidth` | Whether the current horizontal size class is compact. |
+| `didChangeToRegularWidth` | Whether the horizontal size class changed from compact to regular. |
+| `didChangeToCompactWidth` | Whether the horizontal size class changed from regular to compact. |
+| `init(previousHorizontalClass:horizontalClass:orientation:)` | The interface orientation of the currently observed view controller. Returns `nil` if the view controller has not been added to a window or its window scene cannot be retrieved. |
 
 ## 🧪 Usage Example
 
