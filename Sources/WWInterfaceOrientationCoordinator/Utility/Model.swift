@@ -58,6 +58,16 @@ public extension WWLayoutEnvironmentInformation {
         currentTrait?.horizontalClass == .compact
     }
     
+    /// 目前的 vertical size class 是否為 regular
+    var isRegularHeight: Bool {
+        currentTrait?.verticalSizeClass == .regular
+    }
+    
+    /// 目前的 vertical size class 是否為 compact
+    var isCompactHeight: Bool {
+        currentTrait?.verticalSizeClass == .compact
+    }
+    
     /// horizontal size class 是否從 compact 變成 regular (常見於 iPhone 直轉橫，或 iPad 進入較寬的顯示環境)
     var didChangeToRegularWidth: Bool {
         previousTrait?.horizontalClass == .compact && currentTrait?.horizontalClass == .regular

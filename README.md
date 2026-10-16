@@ -65,6 +65,8 @@ import WWInterfaceOrientationCoordinator
 | `isPortrait` | 是否為直向 UI。 |
 | `isRegularWidth` | 目前的 horizontal size class 是否為 regular。 |
 | `isCompactWidth` | 目前的 horizontal size class 是否為 compact。 |
+| `isRegularHeight` | 目前的 vertical size class 是否為 regular。 |
+| `isCompactHeight` | 目前的 vertical size class 是否為 compact。 |
 | `didChangeToRegularWidth` | horizontal size class 是否從 compact 變成 regular。 |
 | `didChangeToCompactWidth` | horizontal size class 是否從 regular 變成 compact。 |
 | `init(previousHorizontalClass:horizontalClass:orientation:)` | 目前所觀察 view controller 的 interface orientation。若 view controller 尚未加入 window，或無法取得 window scene，則回傳 `nil`。 |

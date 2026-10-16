@@ -65,6 +65,8 @@ import WWInterfaceOrientationCoordinator
 | `isPortrait` | Whether the current UI is in portrait orientation. |
 | `isRegularWidth` | Whether the current horizontal size class is regular. |
 | `isCompactWidth` | Whether the current horizontal size class is compact. |
+| `isRegularHeight` | Whether the current vertical size class is regular. |
+| `isCompactHeight` | Whether the current vertical size class is compact. |
 | `didChangeToRegularWidth` | Whether the horizontal size class changed from compact to regular. |
 | `didChangeToCompactWidth` | Whether the horizontal size class changed from regular to compact. |
 | `init(previousHorizontalClass:horizontalClass:orientation:)` | The interface orientation of the currently observed view controller. Returns `nil` if the view controller has not been added to a window or its window scene cannot be retrieved. |
