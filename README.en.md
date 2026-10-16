@@ -53,11 +53,14 @@ import WWInterfaceOrientationCoordinator
 | `register(forHorizontalSizeClassChanges:onChange:)` | Registers for horizontal size class changes. Calls `initial` immediately with the current state, then calls `onChange` whenever `UITraitHorizontalSizeClass` changes. |
 | `willTransition(with:animation:completion:)` | Runs a custom animation alongside a view controller transition, using the current interface orientation. If the orientation cannot be determined, the animation callback is not called. |
 
-### WWOrientationInformation
+### WWLayoutEnvironmentInformation
 
 | API | Description |
 | --- | --- |
-| `nil` | Empty or unknown orientation information. |
+| `previousTrait` | The size class state before the change; pass nil when no previous value is available. |
+| `currentTrait` | The current size class state; pass nil when it cannot be determined. |
+| `orientation` | The current interface orientation; pass nil when it cannot be determined. |
+| `unknown` | Empty or unknown orientation information. |
 | `isLandscape` | Whether the current UI is in landscape orientation. |
 | `isPortrait` | Whether the current UI is in portrait orientation. |
 | `isRegularWidth` | Whether the current horizontal size class is regular. |
@@ -65,6 +68,14 @@ import WWInterfaceOrientationCoordinator
 | `didChangeToRegularWidth` | Whether the horizontal size class changed from compact to regular. |
 | `didChangeToCompactWidth` | Whether the horizontal size class changed from regular to compact. |
 | `init(previousHorizontalClass:horizontalClass:orientation:)` | The interface orientation of the currently observed view controller. Returns `nil` if the view controller has not been added to a window or its window scene cannot be retrieved. |
+
+### WWTraitSizeClass
+
+| API | Description |
+| --- | --- |
+| `horizontalClass` | The horizontal size class; pass nil when it cannot be determined. |
+| `verticalSizeClass` | The vertical size class; pass nil when it cannot be determined. |
+| `unknown` | An empty or unknown size class state. |
 
 ## 🧪 Usage Example
 
@@ -102,8 +113,8 @@ final class ViewController: UIViewController {
 
 private extension ViewController {
     
-    func updateLayout(info: WWOrientationInformation) {
-        
+    func updateLayout(info: WWLayoutEnvironmentInformation) {
+
         let orientation = info.orientation ?? .portrait
         let horizontalClass = info.horizontalClass ?? .regular
         

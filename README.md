@@ -53,11 +53,14 @@ import WWInterfaceOrientationCoordinator
 | `register(forHorizontalSizeClassChanges:onChange:)` | 註冊 horizontal size class 變更通知。註冊後會立即以目前狀態呼叫 `initial`，之後每當 `UITraitHorizontalSizeClass` 改變時呼叫 `onChange`。 |
 | `willTransition(with:animation:completion:)` | 在 view controller 轉場期間，依目前 interface orientation 執行自訂動畫。若無法取得目前方向，則不會呼叫動畫 callback。 |
 
-### WWOrientationInformation
+### WWLayoutEnvironmentInformation
 
 | API | 說明 |
 | --- | --- |
-| `nil` | 空白／未知的方向資訊。 |
+| `previousTrait` | 變更前的 Size Class；沒有前值時傳 `nil`。 |
+| `currentTrait` | 目前的 Size Class；無法取得時傳 `nil`。 |
+| `orientation` | 目前的介面方向；無法取得時傳 `nil`。 |
+| `unknown` | 空白／未知的方向資訊。 |
 | `isLandscape` | 是否為橫向 UI。 |
 | `isPortrait` | 是否為直向 UI。 |
 | `isRegularWidth` | 目前的 horizontal size class 是否為 regular。 |
@@ -65,6 +68,14 @@ import WWInterfaceOrientationCoordinator
 | `didChangeToRegularWidth` | horizontal size class 是否從 compact 變成 regular。 |
 | `didChangeToCompactWidth` | horizontal size class 是否從 regular 變成 compact。 |
 | `init(previousHorizontalClass:horizontalClass:orientation:)` | 目前所觀察 view controller 的 interface orientation。若 view controller 尚未加入 window，或無法取得 window scene，則回傳 `nil`。 |
+
+### WWTraitSizeClass
+
+| API | 說明 |
+| --- | --- |
+| `horizontalClass` | horizontal size class；無法取得時傳 `nil`。 |
+| `verticalSizeClass` | vertical size class；無法取得時傳 `nil`。 |
+| `unknown` | 空白／未知的 Size Class 狀態。 |
 
 ## 🧪 [使用範例](https://developer.apple.com/videos/play/wwdc2017/812/)
 
@@ -102,8 +113,8 @@ final class ViewController: UIViewController {
 
 private extension ViewController {
     
-    func updateLayout(info: WWOrientationInformation) {
-        
+    func updateLayout(info: WWLayoutEnvironmentInformation) {
+
         let orientation = info.orientation ?? .portrait
         let horizontalClass = info.horizontalClass ?? .regular
         

@@ -38,10 +38,10 @@ final class ViewController: UIViewController {
 
 private extension ViewController {
     
-    func updateLayout(info: WWOrientationInformation) {
+    func updateLayout(info: WWLayoutEnvironmentInformation) {
         
         let orientation = info.orientation ?? .portrait
-        let horizontalClass = info.horizontalClass ?? .regular
+        let horizontalClass = info.currentTrait?.horizontalClass ?? .regular
         
         switch orientation {
         case .landscapeLeft, .landscapeRight: imageView.image = (horizontalClass == .regular) ? .innerLandscape : .outterLandscape
