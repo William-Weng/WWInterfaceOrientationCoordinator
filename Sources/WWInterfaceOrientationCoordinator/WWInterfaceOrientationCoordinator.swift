@@ -44,6 +44,32 @@ public extension WWInterfaceOrientationCoordinator {
     }
 }
 
+// MARK: - 公開參數
+@available(iOS 27.1, *)
+public extension WWInterfaceOrientationCoordinator {
+    
+    /// 獲取畫面上所有【物理存在】的摺疊線/分割區域
+    /// - Note: 包含「不活躍狀態」（例如：當摺疊手機完全攤平時，折痕在物理上存在但此時寬度為 0 ）
+    /// - Purpose: 適合用來決定巨觀的網格（Grid）或分欄結構，避免使用者在開合螢幕時畫面發生大幅度跳動
+    var divisionRegions: [UIView.ReservedRegion] {
+        return viewController?.view.reservedRegions(kind: .division, options: [.includeInactive]) ?? []
+    }
+    
+    /// 獲取畫面上所有【當前正在遮擋像素】的硬體/系統區域
+    /// - Note: 預設只包含「活躍狀態」（例如：動態島、瀏海、挖孔鏡頭，或當前顯示的系統控制列）
+    /// - Purpose: 適合用來做 UI 的邊距避讓（Padding），確保按鈕或重要文字絕對不會被物理硬體遮住
+    var occlusionRegions: [UIView.ReservedRegion] {
+        return viewController?.view.reservedRegions(kind: .occlusion) ?? []
+    }
+    
+    /// 獲取當前【真正被折起、看得見】的第一個主要摺疊線區域
+    /// - Logic: 直接從已獲取的 `divisionRegions` 中，高效篩選出第一個狀態為 `isActive` 的區域
+    /// - Purpose: 適合用來啟動微觀的 UI 調整，例如：當此屬性不為 nil 時，代表手機正處於半折疊的「懸停模式（Flex Mode）」，可將特定內容移開摺疊軸
+    var activeDivisionRegion: UIView.ReservedRegion? {
+        return divisionRegions.first { $0.isActive }
+    }
+}
+
 // MARK: - 公開函式
 public extension WWInterfaceOrientationCoordinator {
     
@@ -99,3 +125,4 @@ public extension WWInterfaceOrientationCoordinator {
         })
     }
 }
+

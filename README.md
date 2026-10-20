@@ -12,7 +12,7 @@
 
 iPhone Duo 的外螢幕通常對應 compact width，內螢幕則通常對應 regular width；App 應依 size class 調整版面，而不是針對每種裝置姿勢寫死 layout。本元件把「監聽 size class 變化」與「取得目前 orientation」收斂到同一個 coordinator，讓 ViewController 不需要散落多處處理 trait 與轉場邏輯。
 
-https://github.com/user-attachments/assets/f8d1eb71-b920-4013-af30-600cbf432366
+https://github.com/user-attachments/assets/aa0317af-da1e-49c4-a449-1e56606b0953
 
 ## ✨ [主要功能](https://medium.com/@iamCoder/device-orientation-modes-in-ios-c86fb3497ede)
 
@@ -53,6 +53,14 @@ import WWInterfaceOrientationCoordinator
 | `register(forHorizontalSizeClassChanges:onChange:)` | 註冊 horizontal size class 變更通知。註冊後會立即以目前狀態呼叫 `initial`，之後每當 `UITraitHorizontalSizeClass` 改變時呼叫 `onChange`。 |
 | `willTransition(with:animation:completion:)` | 在 view controller 轉場期間，依目前 interface orientation 執行自訂動畫。若無法取得目前方向，則不會呼叫動畫 callback。 |
 
+### WWInterfaceOrientationCoordinator (iOS 27.1)
+
+| API | 說明 |
+| --- | --- |
+| `divisionRegions` | 獲取畫面上所有【物理存在】的摺疊線/分割區域。 |
+| `occlusionRegions` | 獲取畫面上所有【當前正在遮擋像素】的硬體/系統區域。 |
+| `activeDivisionRegion` | 獲取當前【真正被折起、看得見】的第一個主要摺疊線區域。 |
+
 ### WWLayoutEnvironmentInformation
 
 | API | 說明 |
@@ -91,8 +99,11 @@ final class ViewController: UIViewController {
     
     private lazy var orientationCoordinator = WWInterfaceOrientationCoordinator(viewController: self)
     
+    private let foldBox = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        initFolderView()
         
         orientationCoordinator.register { [weak self] info in
             guard let self else { return }
@@ -111,14 +122,36 @@ final class ViewController: UIViewController {
             updateLayout(info: info)
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if #available(iOS 27.1, *) {
+            if let region = orientationCoordinator.activeDivisionRegion {
+                foldBox.frame = region.frame
+            } else {
+                foldBox.frame = .zero
+            }
+        }
+    }
 }
 
 private extension ViewController {
     
-    func updateLayout(info: WWLayoutEnvironmentInformation) {
+    func initFolderView() {
+        
+        foldBox.layer.borderColor = UIColor.systemRed.cgColor
+        foldBox.layer.borderWidth = 2
+        foldBox.backgroundColor = UIColor.systemRed.withAlphaComponent(0.3)
+        foldBox.isUserInteractionEnabled = false
+        
+        view.addSubview(foldBox)
+    }
 
+    func updateLayout(info: WWLayoutEnvironmentInformation) {
+        
         let orientation = info.orientation ?? .portrait
-        let horizontalClass = info.horizontalClass ?? .regular
+        let horizontalClass = info.currentTrait?.horizontalClass ?? .regular
         
         switch orientation {
         case .landscapeLeft, .landscapeRight: imageView.image = (horizontalClass == .regular) ? .innerLandscape : .outterLandscape

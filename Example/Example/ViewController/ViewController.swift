@@ -14,8 +14,11 @@ final class ViewController: UIViewController {
     
     private lazy var orientationCoordinator = WWInterfaceOrientationCoordinator(viewController: self)
     
+    private let foldBox = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        initFolderView()
         
         orientationCoordinator.register { [weak self] info in
             guard let self else { return }
@@ -34,10 +37,32 @@ final class ViewController: UIViewController {
             updateLayout(info: info)
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if #available(iOS 27.1, *) {
+            if let region = orientationCoordinator.activeDivisionRegion {
+                foldBox.frame = region.frame
+            } else {
+                foldBox.frame = .zero
+            }
+        }
+    }
 }
 
 private extension ViewController {
     
+    func initFolderView() {
+        
+        foldBox.layer.borderColor = UIColor.systemRed.cgColor
+        foldBox.layer.borderWidth = 2
+        foldBox.backgroundColor = UIColor.systemRed.withAlphaComponent(0.3)
+        foldBox.isUserInteractionEnabled = false
+        
+        view.addSubview(foldBox)
+    }
+
     func updateLayout(info: WWLayoutEnvironmentInformation) {
         
         let orientation = info.orientation ?? .portrait

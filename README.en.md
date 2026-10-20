@@ -12,7 +12,7 @@ A lightweight UIKit utility for coordinating changes to a `UIViewController`’s
 
 The outer display of iPhone Duo typically uses a compact width, while the inner display typically uses a regular width. Apps should adapt their layouts based on size classes rather than hardcoding a layout for every device configuration. This component brings size class observation and current orientation access together in a single coordinator, keeping trait and transition handling from being scattered throughout your view controller.
 
-https://github.com/user-attachments/assets/f8d1eb71-b920-4013-af30-600cbf432366
+https://github.com/user-attachments/assets/aa0317af-da1e-49c4-a449-1e56606b0953
 
 ## ✨ Features
 
@@ -71,6 +71,14 @@ import WWInterfaceOrientationCoordinator
 | `didChangeToCompactWidth` | Whether the horizontal size class changed from regular to compact. |
 | `init(previousHorizontalClass:horizontalClass:orientation:)` | The interface orientation of the currently observed view controller. Returns `nil` if the view controller has not been added to a window or its window scene cannot be retrieved. |
 
+### WWInterfaceOrientationCoordinator (iOS 27.1)
+
+| API | Description |
+| --- | --- |
+| `divisionRegions` | Retrieves all physically existing fold lines or division regions on the screen. (Includes inactive states, e.g., when the device is completely unfolded). |
+| `occlusionRegions` | Retrieves all hardware or system regions that are currently obscuring screen pixels. (Only includes active states, e.g., Dynamic Island, camera notches). |
+| `activeDivisionRegion` | Retrieves the first primary fold line region that is currently active and folded. |
+
 ### WWTraitSizeClass
 
 | API | Description |
@@ -91,8 +99,11 @@ final class ViewController: UIViewController {
     
     private lazy var orientationCoordinator = WWInterfaceOrientationCoordinator(viewController: self)
     
+    private let foldBox = UIView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        initFolderView()
         
         orientationCoordinator.register { [weak self] info in
             guard let self else { return }
@@ -111,14 +122,36 @@ final class ViewController: UIViewController {
             updateLayout(info: info)
         }
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if #available(iOS 27.1, *) {
+            if let region = orientationCoordinator.activeDivisionRegion {
+                foldBox.frame = region.frame
+            } else {
+                foldBox.frame = .zero
+            }
+        }
+    }
 }
 
 private extension ViewController {
     
-    func updateLayout(info: WWLayoutEnvironmentInformation) {
+    func initFolderView() {
+        
+        foldBox.layer.borderColor = UIColor.systemRed.cgColor
+        foldBox.layer.borderWidth = 2
+        foldBox.backgroundColor = UIColor.systemRed.withAlphaComponent(0.3)
+        foldBox.isUserInteractionEnabled = false
+        
+        view.addSubview(foldBox)
+    }
 
+    func updateLayout(info: WWLayoutEnvironmentInformation) {
+        
         let orientation = info.orientation ?? .portrait
-        let horizontalClass = info.horizontalClass ?? .regular
+        let horizontalClass = info.currentTrait?.horizontalClass ?? .regular
         
         switch orientation {
         case .landscapeLeft, .landscapeRight: imageView.image = (horizontalClass == .regular) ? .innerLandscape : .outterLandscape
