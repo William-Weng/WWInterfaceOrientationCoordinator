@@ -78,6 +78,7 @@ import WWInterfaceOrientationCoordinator
 | `divisionRegions` | Retrieves all physically existing fold lines or division regions on the screen. (Includes inactive states, e.g., when the device is completely unfolded). |
 | `occlusionRegions` | Retrieves all hardware or system regions that are currently obscuring screen pixels. (Only includes active states, e.g., Dynamic Island, camera notches). |
 | `activeDivisionRegion` | Retrieves the first primary fold line region that is currently active and folded. |
+| `crossAxisDimensionRange(with:ratio:minimum:maximum:)` | Creates a `UISplitArrangement.DimensionRange` from a cross-axis size ratio. |
 
 ### WWTraitSizeClass
 

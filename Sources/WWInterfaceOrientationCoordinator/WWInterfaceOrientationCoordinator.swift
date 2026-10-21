@@ -71,6 +71,63 @@ public extension WWInterfaceOrientationCoordinator {
 }
 
 // MARK: - 公開函式
+@available(iOS 27.1, *)
+public extension WWInterfaceOrientationCoordinator {
+    
+    /// 依跨軸比例建立 `UISplitArrangement.DimensionRange`
+    ///
+    /// - Parameters:
+    ///   - size: 用來換算比例的容器尺寸。寬度與高度都必須是大於 0 的有限數值
+    ///   - ratio: 跨軸比例，決定要讓寬度跟隨高度，或高度跟隨寬度
+    ///   - minimum: 最小尺寸，預設為 `.absolute(0)`
+    ///   - maximum: 最大尺寸；若為 `nil`，則使用 `.fractional(1)`，表示不超過可用空間
+    ///
+    /// - Returns:
+    ///   - `.success(DimensionRange)`：計算成功時回傳可套用到 arrangement 的尺寸範圍
+    ///   - `.failure(DimensionRangeError)`：尺寸或比例無效時回傳對應錯誤
+    static func crossAxisDimensionRange(with size: CGSize, ratio: CrossAxisRatio, minimum: UISplitArrangement.Dimension = .absolute(0), maximum: UISplitArrangement.Dimension? = nil) -> Result<UISplitArrangement.DimensionRange, DimensionRangeError> {
+
+        guard size.width.isFinite, size.height.isFinite,
+              size.width > 0, size.height > 0
+        else {
+            return .failure(.invalidSize(size))
+        }
+
+        let rawRatio: CGFloat
+        
+        switch ratio {
+        case .widthFollowsHeight(let value): rawRatio = value
+        case .heightFollowsWidth(let value): rawRatio = value
+        }
+        
+        guard rawRatio.isFinite, rawRatio >= 0 else { return .failure(.invalidRatio(rawRatio)) }
+
+        let preferredFraction: CGFloat
+
+        switch ratio {
+        case .widthFollowsHeight(let heightRatio):
+            let targetWidth = size.height * heightRatio
+            preferredFraction = targetWidth / size.width
+        case .heightFollowsWidth(let widthRatio):
+            let targetHeight = size.width * widthRatio
+            preferredFraction = targetHeight / size.height
+        }
+        
+        guard preferredFraction.isFinite else { return .failure(.invalidRatio(rawRatio)) }
+
+        let clampedFraction = min(max(preferredFraction, 0.0), 1.0)
+        var range = UISplitArrangement.DimensionRange()
+        
+        range.minimum = minimum
+        range.preferred = .fractional(clampedFraction)
+        range.maximum = maximum ?? .fractional(1.0)
+        
+        return .success(range)
+    }
+}
+
+
+// MARK: - 公開函式
 public extension WWInterfaceOrientationCoordinator {
     
     /// 註冊 horizontal size class 變更通知，並立即回報一次目前狀態
@@ -125,4 +182,3 @@ public extension WWInterfaceOrientationCoordinator {
         })
     }
 }
-

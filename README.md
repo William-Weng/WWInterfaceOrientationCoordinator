@@ -60,6 +60,7 @@ import WWInterfaceOrientationCoordinator
 | `divisionRegions` | 獲取畫面上所有【物理存在】的摺疊線/分割區域。 |
 | `occlusionRegions` | 獲取畫面上所有【當前正在遮擋像素】的硬體/系統區域。 |
 | `activeDivisionRegion` | 獲取當前【真正被折起、看得見】的第一個主要摺疊線區域。 |
+| `crossAxisDimensionRange(with:ratio:minimum:maximum:)` | 依跨軸比例建立 `UISplitArrangement.DimensionRange`。 |
 
 ### WWLayoutEnvironmentInformation
 
